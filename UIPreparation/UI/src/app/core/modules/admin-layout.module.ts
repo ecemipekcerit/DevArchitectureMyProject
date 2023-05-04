@@ -18,18 +18,21 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { LoginComponent } from 'app/core/components/admin/login/login.component';
 import { GroupComponent } from 'app/core/components/admin/group/group.component';
 import { UserComponent } from 'app/core/components/admin/user/user.component';
-import { TranslateLoader, TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslateLoader, TranslateModule, TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { TranslationService } from 'app/core/services/translation.service';
+import { TranslationService } from 'app/core/services/Translation.service';
 import { LanguageComponent } from '../components/admin/language/language.component';
 import { TranslateComponent } from '../components/admin/translate/translate.component';
 import { OperationClaimComponent } from '../components/admin/operationclaim/operationClaim.component';
 import { LogDtoComponent } from '../components/admin/log/logDto.component';
 import { MatSortModule } from '@angular/material/sort';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
-
-
+import { ProductComponent } from '../components/admin/product/product.component';
+import { CustomerComponent } from '../components/admin/customer/customer.component';
+import { OrderComponent } from '../components/admin/order/order.component';
+import { WarehouseComponent } from '../components/admin/warehouse/warehouse.component';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 // export function layoutHttpLoaderFactory(http: HttpClient) {
 // 
 //   return new TranslateHttpLoader(http,'../../../../../../assets/i18n/','.json');
@@ -37,6 +40,7 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 
 @NgModule({
     imports: [
+        MatAutocompleteModule,
         CommonModule,
         RouterModule.forChild(AdminLayoutRoutes),
         FormsModule,
@@ -63,6 +67,9 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
             }
         })
     ],
+    providers:[
+        TranslateService
+    ],
     declarations: [
         DashboardComponent,
         UserComponent,
@@ -71,7 +78,11 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
         LanguageComponent,
         TranslateComponent,
         OperationClaimComponent,
-        LogDtoComponent
+        LogDtoComponent,
+        ProductComponent,
+        CustomerComponent,
+        OrderComponent,
+        WarehouseComponent
 
     ]
 })

@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Entities.Concrete;
 using System.Collections.Generic;
+using Business.Handlers.Languages.Queries;
+using Core.Entities.Dtos;
 
 namespace WebAPI.Controllers
 {
@@ -28,6 +30,26 @@ namespace WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
         [HttpGet("getall")]
         public async Task<IActionResult> GetList()
+        {
+            var result = await Mediator.Send(new GetCustomersQuery());
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+            return BadRequest(result.Message);
+        }
+       
+        /// <summary>
+        /// LanguageLookUp
+        /// </summary>
+        /// <remarks>bla bla bla Languages</remarks>
+        /// <return>Languages List</return>
+        /// <response code="200"></response>
+        [Produces("application/json", "text/plain")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<SelectionItem>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
+        [HttpGet("lookups")]
+        public async Task<IActionResult> GetCustomerLookupList()
         {
             var result = await Mediator.Send(new GetCustomersQuery());
             if (result.Success)

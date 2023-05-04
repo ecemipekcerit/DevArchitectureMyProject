@@ -30,5 +30,6 @@ namespace Core.DataAccess
 
         Task<int> GetCountAsync(Expression<Func<T, bool>> expression = null);
         int GetCount(Expression<Func<T, bool>> expression = null);
+        
     }
 }

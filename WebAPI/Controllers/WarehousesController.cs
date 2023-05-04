@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Entities.Concrete;
 using System.Collections.Generic;
+using Entities.Dtos;
 
 namespace WebAPI.Controllers
 {
@@ -30,6 +31,25 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetList()
         {
             var result = await Mediator.Send(new GetWarehousesQuery());
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+            return BadRequest(result.Message);
+        }
+        ///<summary>
+        ///List Warehouses
+        ///</summary>
+        ///<remarks>Warehouses</remarks>
+        ///<return>List Warehouses</return>
+        ///<response code="200"></response>
+        [Produces("application/json", "text/plain")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<WarehouseDto>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
+        [HttpGet("getwarehousedtolist")]
+        public async Task<IActionResult> GetWarehouseDtoList()
+        {
+            var result = await Mediator.Send(new GetWarehouseDtoQuery());
             if (result.Success)
             {
                 return Ok(result.Data);

@@ -12,5 +12,6 @@ namespace Entities.Concrete
         public string ProductName { get; set; }
         public string Color { get; set; }
         public string Size { get; set; }
+        public List<Warehouse>Warehouses { get; set; }
     }
 }

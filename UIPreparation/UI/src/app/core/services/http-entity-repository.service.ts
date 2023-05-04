@@ -16,7 +16,10 @@ export class HttpEntityRepositoryService<T> {
     return this.httpClient.get<T[]>( 
       environment.getApiUrl + _url);
   }
- 
+  /* getDtoList(_url: string): Observable<T[]> {
+    return this.httpClient.get<T[]>( 
+      environment.getApiUrl + _url);
+  }  */
   //api/[controller]/:id - GET
   get(_url: string, id?: number): Observable<T> {
     return this.httpClient.get<T>(

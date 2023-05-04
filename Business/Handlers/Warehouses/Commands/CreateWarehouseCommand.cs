@@ -1,5 +1,4 @@
-﻿
-using Business.BusinessAspects;
+﻿using Business.BusinessAspects;
 using Business.Constants;
 using Core.Aspects.Autofac.Caching;
 using Core.Aspects.Autofac.Logging;
@@ -27,8 +26,8 @@ namespace Business.Handlers.Warehouses.Commands
         public bool Status { get; set; }
         public bool isDeleted { get; set; }
         public int ProductId { get; set; }
-        public int Quantity { get; set; }
-        public string Situation { get; set; }
+        public int Stock { get; set; }
+        public bool isReady { get; set; }
 
 
         public class CreateWarehouseCommandHandler : IRequestHandler<CreateWarehouseCommand, IResult>
@@ -47,28 +46,33 @@ namespace Business.Handlers.Warehouses.Commands
             [SecuredOperation(Priority = 1)]
             public async Task<IResult> Handle(CreateWarehouseCommand request, CancellationToken cancellationToken)
             {
-                var isThereWarehouseRecord = _warehouseRepository.Query().Any(u => u.CreatedUserId == request.CreatedUserId);
+                var isThereWarehouseRecord = _warehouseRepository.Query().Any(u => u.ProductId == request.ProductId && u.Stock ==request.Stock && u.isReady == request.isReady && u.isDeleted == false);
 
                 if (isThereWarehouseRecord == true)
-                    return new ErrorResult(Messages.NameAlreadyExist);
-
-                var addedWarehouse = new Warehouse
                 {
-                    CreatedUserId = request.CreatedUserId,
-                    CreatedDate = System.DateTime.Now,
-                    LastUpdatedUserId = request.LastUpdatedUserId,
-                    LastUpdatedDate = System.DateTime.Now,
-                    Status = request.Status,
-                    isDeleted = false,
-                    ProductId = request.ProductId,
-                    Quantity = request.Quantity,
-                    Situation = request.Situation,
+                    return new ErrorResult(Messages.NameAlreadyExist);
+                }
+                else
+                {
+                    var addedWarehouse = new Warehouse
+                    {
+                        CreatedUserId = request.CreatedUserId,
+                        CreatedDate = System.DateTime.Now,
+                        LastUpdatedUserId = request.LastUpdatedUserId,
+                        LastUpdatedDate = System.DateTime.Now,
+                        Status = request.Status,
+                        isDeleted = false,
+                        ProductId = request.ProductId,
+                        Stock = request.Stock,
+                        isReady = request.isReady,
 
-                };
+                    };
 
-                _warehouseRepository.Add(addedWarehouse);
-                await _warehouseRepository.SaveChangesAsync();
-                return new SuccessResult(Messages.Added);
+                    _warehouseRepository.Add(addedWarehouse);
+                    await _warehouseRepository.SaveChangesAsync();
+                    return new SuccessResult(Messages.Added);
+
+                }
             }
         }
     }

@@ -16,10 +16,5 @@
             : base(default, true, message)
         {
         }
-
-        public SuccessDataResult()
-            : base(default, true)
-        {
-        }
     }
 }

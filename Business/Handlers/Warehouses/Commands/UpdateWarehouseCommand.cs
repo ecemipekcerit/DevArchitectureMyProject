@@ -27,8 +27,9 @@ namespace Business.Handlers.Warehouses.Commands
         public bool Status { get; set; }
         public bool isDeleted { get; set; }
         public int ProductId { get; set; }
-        public int Quantity { get; set; }
-        public string Situation { get; set; }
+        public int Stock { get; set; }
+        public bool isReady { get; set; }
+        //public Warehouse warehouse { get; set; }
 
         public class UpdateWarehouseCommandHandler : IRequestHandler<UpdateWarehouseCommand, IResult>
         {
@@ -54,11 +55,11 @@ namespace Business.Handlers.Warehouses.Commands
                 isThereWarehouseRecord.CreatedDate = System.DateTime.Now;
                 isThereWarehouseRecord.LastUpdatedUserId = request.LastUpdatedUserId;
                 isThereWarehouseRecord.LastUpdatedDate = System.DateTime.Now;
-                isThereWarehouseRecord.Situation = request.Situation;
+                isThereWarehouseRecord.Status = request.Status;
                 isThereWarehouseRecord.isDeleted = request.isDeleted;
                 isThereWarehouseRecord.ProductId = request.ProductId;
-                isThereWarehouseRecord.Quantity = request.Quantity;
-                isThereWarehouseRecord.Situation = request.Situation;
+                isThereWarehouseRecord.Stock = request.Stock;
+                isThereWarehouseRecord.isReady = request.isReady;
 
 
                 _warehouseRepository.Update(isThereWarehouseRecord);

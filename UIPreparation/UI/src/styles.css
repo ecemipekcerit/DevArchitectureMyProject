@@ -39,3 +39,7 @@ span:hover {
 table {
     width: 100%;
   }
+
+.cdk-overlay-container {
+	z-index: 9999 !important;
+}

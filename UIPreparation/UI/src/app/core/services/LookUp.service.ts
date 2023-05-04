@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
-import { LookUp } from '../models/lookUp';
+import { LookUp } from '../models/LookUp';
 
 
 @Injectable({
@@ -28,6 +28,14 @@ export class LookUpService {
 
   getLanguageLookup():Observable<LookUp[]>{
     return this.httpClient.get<LookUp[]>(environment.getApiUrl + "/languages/lookups")
+  }
+
+  getCustomerLookUp():Observable<LookUp[]>{
+    return this.httpClient.get<LookUp[]>(environment.getApiUrl + "/customers/lookups")
+  }
+
+  getProductLookUp():Observable<LookUp[]>{
+    return this.httpClient.get<LookUp[]>(environment.getApiUrl + "/products/lookups")
   }
 
 }

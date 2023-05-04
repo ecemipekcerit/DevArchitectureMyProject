@@ -47,28 +47,32 @@ namespace Business.Handlers.Products.Commands
             [SecuredOperation(Priority = 1)]
             public async Task<IResult> Handle(CreateProductCommand request, CancellationToken cancellationToken)
             {
-                var isThereProductRecord = _productRepository.Query().Any(u => u.CreatedUserId == request.CreatedUserId);
+                var isThereProductRecord = _productRepository.Query().Any(u => u.ProductName == request.ProductName && u.Color == request.Color && u.Size == request.Size && u.isDeleted == false);
 
                 if (isThereProductRecord == true)
-                    return new ErrorResult(Messages.NameAlreadyExist);
-
-                var addedProduct = new Product
                 {
-                    CreatedUserId = request.CreatedUserId,
-                    CreatedDate = System.DateTime.Now,
-                    LastUpdatedUserId = request.LastUpdatedUserId,
-                    LastUpdatedDate = System.DateTime.Now,
-                    Status = request.Status,
-                    isDeleted = false,
-                    ProductName = request.ProductName,
-                    Color = request.Color,
-                    Size = request.Size,
+                    return new ErrorResult(Messages.NameAlreadyExist);
+                }
+                else
+                {
+                    var addedProduct = new Product
+                    {
+                        CreatedUserId = request.CreatedUserId,
+                        CreatedDate = System.DateTime.Now,
+                        LastUpdatedUserId = request.LastUpdatedUserId,
+                        LastUpdatedDate = System.DateTime.Now,
+                        Status = request.Status,
+                        isDeleted = false,
+                        ProductName = request.ProductName,
+                        Color = request.Color,
+                        Size = request.Size,
 
-                };
+                    };
 
-                _productRepository.Add(addedProduct);
-                await _productRepository.SaveChangesAsync();
-                return new SuccessResult(Messages.Added);
+                    _productRepository.Add(addedProduct);
+                    await _productRepository.SaveChangesAsync();
+                    return new SuccessResult(Messages.Added);
+                }
             }
         }
     }

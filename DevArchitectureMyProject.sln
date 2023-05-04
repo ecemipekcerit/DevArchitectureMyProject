@@ -3,19 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33424.131
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPI", "WebAPI\WebAPI.csproj", "{7DD7318F-4559-4012-9779-E37A3A7DB9EE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI", "WebAPI\WebAPI.csproj", "{7DD7318F-4559-4012-9779-E37A3A7DB9EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{1AE1AA7D-38BA-44BD-B924-724CB6D01F30}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{1AE1AA7D-38BA-44BD-B924-724CB6D01F30}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Business", "Business\Business.csproj", "{58CE057C-90FB-4F59-883D-4034A8FA6376}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Business", "Business\Business.csproj", "{58CE057C-90FB-4F59-883D-4034A8FA6376}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{36F270F3-7534-4E9A-929B-CB78E1236F66}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\DataAccess.csproj", "{36F270F3-7534-4E9A-929B-CB78E1236F66}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{3BA84B81-8425-43CE-A039-1A1F36961438}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{3BA84B81-8425-43CE-A039-1A1F36961438}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "Entities\Entities.csproj", "{498E0B2A-4EA8-4A34-BAE6-91A2709AA736}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "Entities\Entities.csproj", "{498E0B2A-4EA8-4A34-BAE6-91A2709AA736}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UIPreparation", "UIPreparation\UIPreparation.csproj", "{DB37B114-5862-48F6-900B-92289FCFB908}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UIPreparation", "UIPreparation\UIPreparation.csproj", "{DB37B114-5862-48F6-900B-92289FCFB908}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

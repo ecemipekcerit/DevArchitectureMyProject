@@ -19,10 +19,15 @@ export const ADMINROUTES: RouteInfo[] = [
   { path: '/operationclaim', title: 'OperationClaim', icon:'local_police', class: '', claim:"GetOperationClaimsQuery"},
   { path: '/language', title: 'Languages', icon:'language', class: '', claim:"GetLanguagesQuery" },
   { path: '/translate', title: 'TranslateWords', icon: 'translate', class: '', claim: "GetTranslatesQuery" },
-  { path: '/log', title: 'Logs', icon: 'update', class: '', claim: "GetLogDtoQuery" }
+  { path: '/log', title: 'Logs', icon: 'update', class: '', claim: "GetLogDtoQuery" },
+  
 ];
 
 export const USERROUTES: RouteInfo[] = [ 
+  { path: '/product', title: 'Product', icon: 'update', class: '', claim: "GetProductsQuery" },
+  { path: '/customer', title: 'Customer', icon: 'update', class: '', claim: "GetCustomersQuery" },
+  { path: '/order', title: 'Order', icon: 'update', class: '', claim: "GetOrdersQuery" },
+  { path: '/warehouse', title: 'Warehouse', icon: 'update', class: '', claim: "GetWarehousesQuery" }
   //{ path: '/log', title: 'Logs', icon: 'update', class: '', claim: "GetLogDtoQuery" }
 ];
 

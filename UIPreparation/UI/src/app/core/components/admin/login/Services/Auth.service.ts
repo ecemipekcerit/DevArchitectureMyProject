@@ -22,6 +22,7 @@ export class AuthService {
   userToken: string;
   jwtHelper: JwtHelperService = new JwtHelperService();
   claims: string[];
+  userId: number;
 
   constructor(private httpClient: HttpClient, private storageService: LocalStorageService, 
     private router: Router, private alertifyService:AlertifyService,private sharedService:SharedService) {
@@ -95,7 +96,12 @@ export class AuthService {
   }
 
   getCurrentUserId() {
-    this.jwtHelper.decodeToken(this.storageService.getToken()).userId;
+    var decode = this.jwtHelper.decodeToken(this.storageService.getToken());
+    console.log(decode);
+    var propUserId = Object.keys(decode)?.filter(x => x.endsWith("/nameidentifier"))[0];
+    console.log(propUserId);
+    this.userId = Number(decode[propUserId]);
+    return this.userId
   }
 
   claimGuard(claim: string): boolean {

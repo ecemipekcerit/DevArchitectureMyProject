@@ -25,6 +25,7 @@ namespace Business.Handlers.Customers.Commands
         public int CreatedUserId { get; set; }
         public int LastUpdatedUserId { get; set; }
         public bool Status { get; set; }
+        public bool isDeleted { get; set; }
         public string CustomerName { get; set; }
         public string CustomerCode { get; set; }
         public string CustomerAddress { get; set; }
@@ -48,30 +49,37 @@ namespace Business.Handlers.Customers.Commands
             [SecuredOperation(Priority = 1)]
             public async Task<IResult> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
             {
-                var isThereCustomerRecord = _customerRepository.Query().Any(u => u.CreatedUserId == request.CreatedUserId);
+                var isThereCustomerRecord = _customerRepository.Query().Any(u => u.CustomerName == request.CustomerName && u.CustomerCode == request.CustomerCode && u.CustomerMail == request.CustomerMail && u.CustomerPhone == request.CustomerPhone && u.CustomerAddress == request.CustomerAddress && u.isDeleted == false);
 
                 if (isThereCustomerRecord == true)
-                    return new ErrorResult(Messages.NameAlreadyExist);
-
-                var addedCustomer = new Customer
+                { 
+                    return new ErrorResult(Messages.NameAlreadyExist); 
+                }
+                else
                 {
-                    CreatedUserId = request.CreatedUserId,
-                    CreatedDate = System.DateTime.Now,
-                    LastUpdatedUserId = request.LastUpdatedUserId,
-                    LastUpdatedDate = System.DateTime.Now,
-                    Status = request.Status,
-                    isDeleted = false,
-                    CustomerName = request.CustomerName,
-                    CustomerCode = request.CustomerCode,
-                    CustomerAddress = request.CustomerAddress,
-                    CustomerPhone = request.CustomerPhone,
-                    CustomerMail = request.CustomerMail,
+                    var addedCustomer = new Customer
+                    {
+                        CreatedUserId = request.CreatedUserId,
+                        CreatedDate = System.DateTime.Now,
+                        LastUpdatedUserId = request.LastUpdatedUserId,
+                        LastUpdatedDate = System.DateTime.Now,
+                        Status = request.Status,
+                        isDeleted = false,
+                        CustomerName = request.CustomerName,
+                        CustomerCode = request.CustomerCode,
+                        CustomerAddress = request.CustomerAddress,
+                        CustomerPhone = request.CustomerPhone,
+                        CustomerMail = request.CustomerMail,
 
-                };
+                    };
 
-                _customerRepository.Add(addedCustomer);
-                await _customerRepository.SaveChangesAsync();
-                return new SuccessResult(Messages.Added);
+                    _customerRepository.Add(addedCustomer);
+                    await _customerRepository.SaveChangesAsync();
+                    return new SuccessResult(Messages.Added);
+
+                }
+
+                
             }
         }
     }
