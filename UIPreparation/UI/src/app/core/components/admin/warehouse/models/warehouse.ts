@@ -1,6 +1,5 @@
-﻿
-export class Warehouse{
-    id?:number; 
+﻿export class Warehouse{
+id?:number; 
 createdUserId?:number; 
 createdDate?:(Date | any); 
 lastUpdatedUserId?:number; 

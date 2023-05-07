@@ -18,6 +18,7 @@ import { HttpClient } from '@angular/common/http';
 import { LookUp } from 'app/core/models/LookUp';
 import { CustomerService } from '../customer/services/customer.service';
 import { Customer } from '../customer/models/customer';
+import { element } from 'protractor';
 
 declare var jQuery: any;
 
@@ -49,6 +50,9 @@ export class OrderComponent implements AfterViewInit, OnInit {
 	filteredCustomers:Observable<Customer[]>;
 
 	orderId:number;
+	orderDtoId:number;
+
+	selectedOrder: Order;
 
 	constructor(private customerService:CustomerService, private productService:ProductService,private orderService:OrderService, private lookupService:LookUpService,private alertifyService:AlertifyService,private formBuilder: FormBuilder, private authService:AuthService) { }
 
@@ -80,20 +84,18 @@ export class OrderComponent implements AfterViewInit, OnInit {
 		});
 	}
 
-	getCustomerList(){this.customerService.getCustomerList().subscribe((data) => {
-		this.customerList = data;
+	getCustomerList(){
+		this.customerService.getCustomerList().subscribe((data) => {
+			this.customerList = data;
 
-		this.filteredCustomers = 
-		this.orderAddForm.controls.customerId.valueChanges.pipe(
-			startWith(""),
-			map((value) => 
-			typeof value==='string' ? value:value.customerName
-			),
-			map((name) => 
-			name ? this._filterbyCustomer(name):this.customerList.slice()
-			)
-		);
-	});
+			this.filteredCustomers = this.orderAddForm.controls.customerId.valueChanges.pipe(
+				startWith(""),
+				map((value) => {
+					const name = typeof value ==='string' ? value:value?.customerName??'';
+					return name ? this._filterbyCustomer(name):this.customerList.slice(); 
+				}),
+			);
+		});
 	}
 
 	private _filterbyCustomer(value: string): Customer[]{
@@ -106,15 +108,17 @@ export class OrderComponent implements AfterViewInit, OnInit {
 	}
 	getProductList(){
 		this.productService.getProductList().subscribe((data) => {
-		this.productList = data;
+			this.productList = data;
 
-		this.filteredProducts = 
-		this.orderAddForm.controls.productId.valueChanges.pipe(
-			startWith(''),
-				map(value => typeof value === 'string' ? value : value.productName),
-				map(name => name ? this._filterbyProduct(name) : this.productList.slice())
-		);
-	});
+			this.filteredProducts= this.orderAddForm.controls.productId.valueChanges.pipe(
+				startWith(""),
+				map((value) => {
+					const name = typeof value==='string' ? value:value?.productName??'';
+					return name ? this._filterbyProduct(name):this.productList.slice();
+				}),
+			);
+			
+		});
 	}
 
 	private _filterbyProduct(value: string): Product[]{
@@ -129,13 +133,19 @@ export class OrderComponent implements AfterViewInit, OnInit {
 	save(){
 
 		if (this.orderAddForm.valid) {
-			this.order = Object.assign({}, this.orderAddForm.value);
-			this.order.productId= this.orderAddForm.controls["productId"].value.id;
-			this.order.customerId=this.orderAddForm.controls["customerId"].value.id;
-			this.order.createdUserId = this.authService.getCurrentUserId()
-			this.order.lastUpdatedUserId = this.authService.getCurrentUserId()
-			if (this.order.id == 0)
+			if(this.orderAddForm.controls.id === undefined){
+				this.orderAddForm.controls.id.setValue(0)
+			} 
+			if(this.selectedOrder === undefined) this.selectedOrder = new Order();
+			this.selectedOrder.id=this.orderAddForm.controls.id.value;
+			this.selectedOrder.productId= this.orderAddForm.controls.productId.value.id;
+			this.selectedOrder.customerId=this.orderAddForm.controls.customerId.value.id;
+			this.selectedOrder.quantity=this.orderAddForm.controls.quantity.value;
+			//this.selectedOrder.createdUserId = this.authService.getCurrentUserId()
+			this.selectedOrder.lastUpdatedUserId = this.orderAddForm.controls.lastUpdatedUserId.value;
+			if (this.selectedOrder.id == 0){
 				this.addOrder();
+			}
 			else
 				this.updateOrder();
 		}
@@ -143,7 +153,7 @@ export class OrderComponent implements AfterViewInit, OnInit {
 
 	addOrder(){
 
-		this.orderService.addOrder(this.order).subscribe((data) => {
+		this.orderService.addOrder(this.selectedOrder).subscribe((data) => {
 			this.getOrderDtoList();
 			this.order = new Order();
 			jQuery('#order').modal('hide');
@@ -159,13 +169,14 @@ export class OrderComponent implements AfterViewInit, OnInit {
 
 	updateOrder(){
 
-		this.orderService.updateOrder(this.order).subscribe(data => {
+		this.orderService.updateOrder(this.selectedOrder).subscribe(data => {
 
-			var index=this.orderList.findIndex(x=>x.id==this.order.id);
-			this.orderList[index]=this.order;
-			this.dataSource = new MatTableDataSource(this.orderList);
+			var index = this.dataSource.data.findIndex(x => x.id == this.selectedOrder.id);
+			this.dataSource[index]=this.selectedOrder;
+			this.dataSource[index].productName = this.productList.find(x => x.id == this.selectedOrder.productId).productName;
+			this.dataSource[index].customerName = this.customerList.find(y => y.id == this.selectedOrder.customerId).customerName;
             this.configDataTable();
-			this.order = new Order();
+			this.selectedOrder = new Order();
 			jQuery('#order').modal('hide');
 			this.alertifyService.success(data);
 			this.clearFormGroup(this.orderAddForm);
@@ -179,28 +190,36 @@ export class OrderComponent implements AfterViewInit, OnInit {
 			id : [0],
 			createdUserId : [0],
 			lastUpdatedUserId : [0],
-			status : [true],
 			customerId : ["0", Validators.required],
 			productId : ["0", Validators.required],
-			quantity : ["", Validators.required]
+			quantity : ["0", Validators.required]
 		})
 	}
 
 	deleteOrder(orderId:number){
 		this.orderService.deleteOrder(orderId).subscribe(data=>{
 			this.alertifyService.success(data.toString());
-			this.orderList=this.orderList.filter(x=> x.id!=orderId);
-			this.dataSource = new MatTableDataSource(this.orderList);
+			this.dataSource.data = this.dataSource.data.filter(x => x.id != orderId);
+			//this.dataSource = new MatTableDataSource(this.orderList);
 			this.configDataTable();
 		})
 	}
 
-	getOrderById(orderId:number){
+	getOrderById(element: any){
 		this.clearFormGroup(this.orderAddForm);
-		this.orderService.getOrderById(orderId).subscribe(data=>{
+		this.selectedOrder = element;
+		this.orderAddForm.setValue({
+			id:element.id,
+			productId: this.productList.find(x => x.id == element.productId),
+			customerId:this.customerList.find(y => y.id == element.customerId),
+			quantity:element.quantity,
+			createdUserId: 0,
+			lastUpdatedUserId: this.authService.userId ?? 1,
+		})
+		/* this.orderService.getOrderById(orderId).subscribe(data=>{
 			this.order=data;
 			this.orderAddForm.patchValue(data);
-		})
+		}) */
 	}
 
 
@@ -214,10 +233,7 @@ export class OrderComponent implements AfterViewInit, OnInit {
 			group.get(key).setErrors(null);
 			if (key == 'id') group.get(key).setValue(0);
 			else if (key == "status") group.get(key).setValue(true);
-			else if (key == "productId") group.get(key).setValue('');
-			else if (key == "customerId") group.get(key).setValue('');
 		});
-		//location.reload();
 	} 
 
 	checkClaim(claim:string):boolean{

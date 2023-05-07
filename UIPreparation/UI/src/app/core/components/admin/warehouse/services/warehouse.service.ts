@@ -14,11 +14,10 @@ export class WarehouseService {
   constructor(private httpClient: HttpClient) { }
 
   /*getWarehouseList(): Observable<Warehouse[]> {
-
     return this.httpClient.get<Warehouse[]>(environment.getApiUrl + '/warehouses/getall')
   }*/
-  getWarehouseDtoList(): Observable<WarehouseDto[]> {
 
+  getWarehouseDtoList(): Observable<WarehouseDto[]> {
     return this.httpClient.get<WarehouseDto[]>(environment.getApiUrl + '/warehouses/getwarehousedtolist')
   }
 
@@ -27,18 +26,14 @@ export class WarehouseService {
   }
 
   addWarehouse(warehouse: Warehouse): Observable<any> {
-
     return this.httpClient.post(environment.getApiUrl + '/warehouses/', warehouse, { responseType: 'text' });
   }
 
   updateWarehouse(warehouse: Warehouse): Observable<any> {
     return this.httpClient.put(environment.getApiUrl + '/warehouses/', warehouse, { responseType: 'text' });
-
   }
 
   deleteWarehouse(id: number) {
     return this.httpClient.request('delete', environment.getApiUrl + '/warehouses/', { body: { id: id } });
   }
-
-
 }

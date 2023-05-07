@@ -91,7 +91,7 @@
                   <th mat-header-cell *matHeaderCellDef></th>
                   <td style="width: 25px;" mat-cell
                     *matCellDef="let element">
-                    <a *ngIf="checkClaim('UpdateOrderCommand')" data-toggle="modal" data-target="#order"  (click)="getOrderById(element.id)">
+                    <a *ngIf="checkClaim('UpdateOrderCommand')" data-toggle="modal" data-target="#order"  (click)="getOrderById(element)">
                       <i title="{{'Update'| translate}}" style="color:#ff5722;" class="far fa-edit"></i>
                     </a>
                   </td>
