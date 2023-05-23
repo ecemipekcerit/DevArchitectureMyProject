@@ -9,8 +9,8 @@ namespace Business.Handlers.Orders.ValidationRules
     {
         public CreateOrderValidator()
         {
-            RuleFor(x => x.ProductId).NotEmpty();
-            RuleFor(x => x.Quantity).NotEmpty();
+            RuleFor(x => x.ProductId).NotNull();
+            RuleFor(x => x.Quantity).NotNull();
 
         }
     }

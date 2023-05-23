@@ -9,10 +9,10 @@ import { LookUpService } from 'app/core/services/LookUp.service';
 import { AuthService } from 'app/core/components/admin/login/services/auth.service';
 import { Product } from './models/product';
 import { ProductService } from './services/product.service';
-import { environment } from 'environments/environment';
-import { HttpClient } from '@angular/common/http';
-import {FormControl} from '@angular/forms';
-import { Size } from './models/size-enum';
+import { QualityControlTypeEnumLabelMappingSize, Size } from './models/size-enum';
+import { QualityControlTypeEnumLabelMappingColor } from './models/color-enum';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 
 declare var jQuery: any;
 
@@ -36,13 +36,20 @@ export class ProductComponent implements AfterViewInit, OnInit {
 	productlookup:LookUp[];
 	productId: number;
 
-	size = Size;
-	sizeEnumKeys = [];
+	filteredColors: Observable<LookUp[]>;
+	filteredSizes: Observable<LookUp[]>;
 
-	constructor(private productService: ProductService, private lookupService: LookUpService, private alertifyService: AlertifyService, private formBuilder: FormBuilder, private authService: AuthService) {this.sizeEnumKeys=Object.keys(this.size);}
+	SizeLookUp : LookUp[] = [];
+	sizess: string[] = Object.keys(QualityControlTypeEnumLabelMappingSize);
+	
+	ColorLookUp : LookUp[] = [];
+	colorss: string[] = Object.keys(QualityControlTypeEnumLabelMappingColor);
+
+	constructor(private productService: ProductService, private lookupService: LookUpService, private alertifyService: AlertifyService, private formBuilder: FormBuilder, private authService: AuthService) {}
 
 	ngAfterViewInit(): void {
 		this.getProductList();
+		
 	}
 
 	ngOnInit() {
@@ -50,7 +57,54 @@ export class ProductComponent implements AfterViewInit, OnInit {
 			this.productlookup = data;
 		})
 		this.createProductAddForm();
+		this.getSizeList();
+		this.getColorList();
 	}
+
+	
+	getColorList(){
+
+		this.colorss.forEach(x=>{
+			this.ColorLookUp.push({
+				id: [Number(x)], label: QualityControlTypeEnumLabelMappingColor[Number(x)]
+			});
+		});
+		this.filteredColors= this.productAddForm.controls.color.valueChanges.pipe(
+			startWith(""),
+			map((value) => {
+				const name = typeof value ==='string' ? value:value?.label??'';
+				return name ? this._filterbyColor(name):this.ColorLookUp.slice();
+			}),
+		);
+	}
+	private _filterbyColor(value: string): LookUp[] {
+
+		const filterValue=value.toLowerCase();
+		return this.ColorLookUp.filter((option) => option.label.toLowerCase().includes(filterValue));
+  	}
+
+
+	getSizeList(){
+
+		this.sizess.forEach(x=>{
+			this.SizeLookUp.push({
+				id: [Number(x)], label: QualityControlTypeEnumLabelMappingSize[Number(x)]
+			});
+		});
+		this.filteredSizes= this.productAddForm.controls.size.valueChanges.pipe(
+			startWith(""),
+			map((value) => {
+				const name = typeof value ==='string' ? value:value?.label??'';
+				return name ? this._filterbySize(name):this.SizeLookUp.slice();
+			}),
+		);
+	}
+
+	private _filterbySize(value: string): LookUp[] {
+
+		const filterValue=value.toLowerCase();
+		return this.SizeLookUp.filter((option) => option.label.toLowerCase().includes(filterValue));
+  	}
 
 
 	getProductList() {
@@ -74,7 +128,7 @@ export class ProductComponent implements AfterViewInit, OnInit {
 	}
 
 	addProduct() {
-
+		
 		this.productService.addProduct(this.product).subscribe(data => {
 			this.getProductList();
 			this.product = new Product();
@@ -103,7 +157,11 @@ export class ProductComponent implements AfterViewInit, OnInit {
 			this.alertifyService.success(data);
 			this.clearFormGroup(this.productAddForm);
 
-		})
+		},
+		(error) => {
+			console.log(error);
+			this.alertifyService.error(error.error);
+		  });
 
 	}
 
@@ -115,7 +173,7 @@ export class ProductComponent implements AfterViewInit, OnInit {
 			status:[true],
 			productName: ["", Validators.required],
 			color: ["", Validators.required],
-			size: [0, Validators.required]
+			size: ["", Validators.required]
 		})
 	}
 

@@ -22,7 +22,9 @@ namespace Business.Handlers.Warehouses.Queries
     public class GetWarehouseRecordQuery:IRequest<IDataResult<Warehouse>>
     {
         public int ProductId { get; set; }
-        public int Stock { get; set; }
+        public int Quantity { get; set; }
+        public string Size { get; set; }
+        public string Color { get; set; }
         public class GetWarehoseRecordQueryHandler : IRequestHandler<GetWarehouseRecordQuery, IDataResult<Warehouse>>
         {
             private readonly IWarehouseRepository _warehouseRepository;
@@ -36,10 +38,9 @@ namespace Business.Handlers.Warehouses.Queries
             [PerformanceAspect(5)]
             [CacheAspect(10)]
             [LogAspect(typeof(FileLogger))]
-            //[SecuredOperation(Priority = 1)]
             public async Task<IDataResult<Warehouse>> Handle(GetWarehouseRecordQuery request, CancellationToken cancellationToken)
             {
-                return new SuccessDataResult<Warehouse>(await _warehouseRepository.GetWarehouse(request.ProductId, request.Stock));
+                return new SuccessDataResult<Warehouse>(await _warehouseRepository.GetWarehouse(request.ProductId, request.Quantity, request.Size, request.Color));
             }
         }
     }

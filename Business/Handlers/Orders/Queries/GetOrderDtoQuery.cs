@@ -31,7 +31,6 @@ namespace Business.Handlers.Orders.Queries
             }
 
             [SecuredOperation(Priority = 1)]
-            [PerformanceAspect(5)]
             [CacheAspect(10)]
             [LogAspect(typeof(FileLogger))]
             public async Task<IDataResult<IEnumerable<OrderDto>>> Handle(GetOrderDtoQuery request, CancellationToken cancellationToken)

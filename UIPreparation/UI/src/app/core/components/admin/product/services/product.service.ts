@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Product } from '../models/product';
 import { environment } from 'environments/environment';
 import { Size } from '../models/size-enum';
+import { Color } from '../models/color-enum';
 
 
 @Injectable({
@@ -18,10 +19,6 @@ export class ProductService {
 
     return this.httpClient.get<Product[]>(environment.getApiUrl + '/products/getall')
   }
-
-  /* getSizeList(): Observable<Size[]>{
-    return this.httpClient.get<Size[]>(environment.getApiUrl + '/products/getsizelist')
-  } */
 
   getProductById(id: number): Observable<Product> {
     return this.httpClient.get<Product>(environment.getApiUrl + '/products/getbyid?id='+id)

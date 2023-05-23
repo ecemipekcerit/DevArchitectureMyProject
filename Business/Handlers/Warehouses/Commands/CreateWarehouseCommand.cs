@@ -24,10 +24,11 @@ namespace Business.Handlers.Warehouses.Commands
         public int CreatedUserId { get; set; }
         public int LastUpdatedUserId { get; set; }
         public bool Status { get; set; }
-        public bool isDeleted { get; set; }
         public int ProductId { get; set; }
-        public int Stock { get; set; }
+        public int Quantity { get; set; }
         public bool isReady { get; set; }
+        public string Color { get; set; }
+        public string Size { get; set; }
 
 
         public class CreateWarehouseCommandHandler : IRequestHandler<CreateWarehouseCommand, IResult>
@@ -46,7 +47,7 @@ namespace Business.Handlers.Warehouses.Commands
             [SecuredOperation(Priority = 1)]
             public async Task<IResult> Handle(CreateWarehouseCommand request, CancellationToken cancellationToken)
             {
-                var isThereWarehouseRecord = _warehouseRepository.Query().Any(u => u.ProductId == request.ProductId && u.Stock ==request.Stock && u.isReady == request.isReady && u.isDeleted == false);
+                var isThereWarehouseRecord = _warehouseRepository.Query().Any(u => u.ProductId == request.ProductId && u.Color == request.Color && u.Size == request.Size && u.isReady == request.isReady && u.isDeleted == false);
 
                 if (isThereWarehouseRecord == true)
                 {
@@ -57,14 +58,13 @@ namespace Business.Handlers.Warehouses.Commands
                     var addedWarehouse = new Warehouse
                     {
                         CreatedUserId = request.CreatedUserId,
-                        CreatedDate = System.DateTime.Now,
                         LastUpdatedUserId = request.LastUpdatedUserId,
-                        LastUpdatedDate = System.DateTime.Now,
                         Status = request.Status,
-                        isDeleted = false,
                         ProductId = request.ProductId,
-                        Stock = request.Stock,
+                        Quantity = request.Quantity,
                         isReady = request.isReady,
+                        Size = request.Size,
+                        Color = request.Color,
 
                     };
 

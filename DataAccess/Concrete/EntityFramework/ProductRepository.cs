@@ -9,6 +9,7 @@ using Core.Entities.Dtos;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Entities.Concrete.Enum;
 
 namespace DataAccess.Concrete.EntityFramework
 {

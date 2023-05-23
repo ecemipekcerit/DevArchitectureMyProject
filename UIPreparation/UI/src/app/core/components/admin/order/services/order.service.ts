@@ -15,16 +15,13 @@ export class OrderService {
   constructor(private httpClient: HttpClient) { }
 
 
- /*  getOrderList(): Observable<Order[]> {
+  getOrderList(): Observable<Order[]> {
 
     return this.httpClient.get<Order[]>(environment.getApiUrl + '/orders/getall')
-  } */
-  getOrderDtoList(): Observable<OrderDto[]> {
-
-    return this.httpClient.get<OrderDto[]>(environment.getApiUrl + '/orders/getorderdtolist')
   }
 
   getOrderById(id: number): Observable<Order> {
+
     return this.httpClient.get<Order>(environment.getApiUrl + '/orders/getbyid?id='+id)
   }
 
@@ -34,13 +31,18 @@ export class OrderService {
   }
 
   updateOrder(order: Order): Observable<any> {
-    return this.httpClient.put(environment.getApiUrl + '/orders/', order, { responseType: 'text' });
 
+    return this.httpClient.put(environment.getApiUrl + '/orders/', order, { responseType: 'text' });
   }
 
   deleteOrder(id: number) {
+
     return this.httpClient.request('delete', environment.getApiUrl + '/orders/', { body: { id: id } });
   }
 
+  getOrderDtoList(): Observable<OrderDto[]> {
 
+    return this.httpClient.get<OrderDto[]>(environment.getApiUrl + '/orders/getorderdtolist')
+  }
+  
 }

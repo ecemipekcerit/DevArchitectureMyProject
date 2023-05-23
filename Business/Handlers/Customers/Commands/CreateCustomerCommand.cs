@@ -25,7 +25,6 @@ namespace Business.Handlers.Customers.Commands
         public int CreatedUserId { get; set; }
         public int LastUpdatedUserId { get; set; }
         public bool Status { get; set; }
-        public bool isDeleted { get; set; }
         public string CustomerName { get; set; }
         public string CustomerCode { get; set; }
         public string CustomerAddress { get; set; }
@@ -60,11 +59,8 @@ namespace Business.Handlers.Customers.Commands
                     var addedCustomer = new Customer
                     {
                         CreatedUserId = request.CreatedUserId,
-                        CreatedDate = System.DateTime.Now,
                         LastUpdatedUserId = request.LastUpdatedUserId,
-                        LastUpdatedDate = System.DateTime.Now,
                         Status = request.Status,
-                        isDeleted = false,
                         CustomerName = request.CustomerName,
                         CustomerCode = request.CustomerCode,
                         CustomerAddress = request.CustomerAddress,

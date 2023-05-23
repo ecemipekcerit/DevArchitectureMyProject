@@ -58,6 +58,26 @@ namespace WebAPI.Controllers
         }
 
         ///<summary>
+        ///List Warehouses
+        ///</summary>
+        ///<remarks>Warehouses</remarks>
+        ///<return>List Warehouses</return>
+        ///<response code="200"></response>
+        [Produces("application/json", "text/plain")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<WarehouseDto>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
+        [HttpGet("getfilterbydatelist")]
+        public async Task<IActionResult> GetFilterByDateList(string startDate, string endDate)
+        {
+            var result = await Mediator.Send(new GetFilterByDateQuery { StartDate = startDate, EndDate=endDate});
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+            return BadRequest(result.Message);
+        }
+
+        ///<summary>
         ///It brings the details according to its id.
         ///</summary>
         ///<remarks>Warehouses</remarks>

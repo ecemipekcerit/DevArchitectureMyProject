@@ -25,7 +25,6 @@ namespace Business.Handlers.Products.Commands
         public int CreatedUserId { get; set; }
         public int LastUpdatedUserId { get; set; }
         public bool Status { get; set; }
-        public bool isDeleted { get; set; }
         public string ProductName { get; set; }
         public string Color { get; set; }
         public string Size { get; set; }
@@ -58,15 +57,11 @@ namespace Business.Handlers.Products.Commands
                     var addedProduct = new Product
                     {
                         CreatedUserId = request.CreatedUserId,
-                        CreatedDate = System.DateTime.Now,
                         LastUpdatedUserId = request.LastUpdatedUserId,
-                        LastUpdatedDate = System.DateTime.Now,
                         Status = request.Status,
-                        isDeleted = false,
                         ProductName = request.ProductName,
                         Color = request.Color,
                         Size = request.Size,
-
                     };
 
                     _productRepository.Add(addedProduct);

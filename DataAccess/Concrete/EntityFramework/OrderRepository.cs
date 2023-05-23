@@ -17,9 +17,9 @@ namespace DataAccess.Concrete.EntityFramework
         {
         }
 
-        public async Task<Order> GetOrder(int productId, int customerId, int quantity)
+        public async Task<Order> GetOrder(int productId, int customerId, int quantity, string size, string color)
         {
-            var order = await Context.Orders.FirstOrDefaultAsync(x => x.ProductId == productId && x.CustomerId == customerId && x.Quantity == quantity && x.isDeleted == false);
+            var order = await Context.Orders.FirstOrDefaultAsync(x => x.ProductId == productId && x.CustomerId == customerId && x.Quantity == quantity && x.Size == size && x.Color == color && x.isDeleted == false);
             return order;
         }
 
@@ -30,19 +30,24 @@ namespace DataAccess.Concrete.EntityFramework
                                from p in op.DefaultIfEmpty()
                                join c in Context.Customers on o.CustomerId equals c.Id into oc
                                from c in oc.DefaultIfEmpty()
-                               where o.isDeleted== false && p.isDeleted == false && c.isDeleted == false
+                               where o.isDeleted == false
                                select new OrderDto
                                {
                                    Id = o.Id,
+                                   CreatedDate = o.CreatedDate,
+                                   LastUpdatedDate = o.LastUpdatedDate,
+                                   Status = o.Status,
                                    CreatedUserId = o.CreatedUserId,
                                    LastUpdatedUserId = o.LastUpdatedUserId,
-                                   ProductId = p.Id,
-                                   ProductName = p.ProductName,
+                                   ProductId = p != null ? p.Id : 0,
+                                   ProductName = p != null ? p.ProductName : null,
                                    Quantity = o.Quantity,
-                                   CustomerId = c.Id,
-                                   CustomerName = c.CustomerName
+                                   CustomerId = c !=null ? c.Id : 0,
+                                   CustomerName = c != null ? c.CustomerName : null,
+                                   Color = o.Color,
+                                   Size = o.Size,
                                }
-                                    ).ToListAsync();
+                    ).ToListAsync();
             return result;
         }
     }

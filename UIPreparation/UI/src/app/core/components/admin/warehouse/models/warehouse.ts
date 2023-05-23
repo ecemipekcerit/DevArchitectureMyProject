@@ -1,4 +1,4 @@
-﻿export class Warehouse{
+﻿export class Warehouse {
 id?:number; 
 createdUserId?:number; 
 createdDate?:(Date | any); 
@@ -7,7 +7,8 @@ lastUpdatedDate?:(Date | any);
 status:boolean; 
 isDeleted:boolean; 
 productId?:number; 
-stock?:number; 
+size?: string;
+color?: string;
+quantity?:number; 
 isReady:boolean; 
-
 }

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using Core.Aspects.Autofac.Validation;
 using Business.Handlers.Warehouses.ValidationRules;
-
+using System;
 
 namespace Business.Handlers.Warehouses.Commands
 {
@@ -24,12 +24,14 @@ namespace Business.Handlers.Warehouses.Commands
         public int Id { get; set; }
         public int CreatedUserId { get; set; }
         public int LastUpdatedUserId { get; set; }
+        public System.DateTime LastUpdatedDate { get; set; }
         public bool Status { get; set; }
         public bool isDeleted { get; set; }
         public int ProductId { get; set; }
-        public int Stock { get; set; }
+        public string Size { get; set; }
+        public string Color { get; set; }
+        public int Quantity { get; set; }
         public bool isReady { get; set; }
-        //public Warehouse warehouse { get; set; }
 
         public class UpdateWarehouseCommandHandler : IRequestHandler<UpdateWarehouseCommand, IResult>
         {
@@ -52,14 +54,15 @@ namespace Business.Handlers.Warehouses.Commands
 
 
                 isThereWarehouseRecord.CreatedUserId = request.CreatedUserId;
-                isThereWarehouseRecord.CreatedDate = System.DateTime.Now;
                 isThereWarehouseRecord.LastUpdatedUserId = request.LastUpdatedUserId;
                 isThereWarehouseRecord.LastUpdatedDate = System.DateTime.Now;
                 isThereWarehouseRecord.Status = request.Status;
                 isThereWarehouseRecord.isDeleted = request.isDeleted;
                 isThereWarehouseRecord.ProductId = request.ProductId;
-                isThereWarehouseRecord.Stock = request.Stock;
+                isThereWarehouseRecord.Quantity = request.Quantity;
                 isThereWarehouseRecord.isReady = request.isReady;
+                isThereWarehouseRecord.Color = request.Color;
+                isThereWarehouseRecord.Size = request.Size;
 
 
                 _warehouseRepository.Update(isThereWarehouseRecord);

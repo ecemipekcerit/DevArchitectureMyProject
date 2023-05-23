@@ -33,6 +33,9 @@ import { CustomerComponent } from '../components/admin/customer/customer.compone
 import { OrderComponent } from '../components/admin/order/order.component';
 import { WarehouseComponent } from '../components/admin/warehouse/warehouse.component';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+
 // export function layoutHttpLoaderFactory(http: HttpClient) {
 // 
 //   return new TranslateHttpLoader(http,'../../../../../../assets/i18n/','.json');
@@ -40,7 +43,9 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 @NgModule({
     imports: [
+        MatDatepickerModule,
         MatAutocompleteModule,
+        MatNativeDateModule,
         CommonModule,
         RouterModule.forChild(AdminLayoutRoutes),
         FormsModule,

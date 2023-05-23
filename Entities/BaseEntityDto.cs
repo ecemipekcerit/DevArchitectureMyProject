@@ -11,7 +11,6 @@ namespace Entities
 {
     public class BaseEntityDto : IDto
     {
-        //[System.ComponentModel.DataAnnotations.Key]
         public int Id { get; set; }
         public int CreatedUserId { get; set; }
         public DateTime CreatedDate { get; set; } = DateTime.Now;
@@ -19,6 +18,7 @@ namespace Entities
         public DateTime LastUpdatedDate { get; set; } = DateTime.Now;
         public bool Status { get; set; }
         public bool isDeleted { get; set; } = false;
-
+        public string Size { get; set; }
+        public string Color { get; set; }
     }
 }

@@ -1,6 +1,6 @@
 ﻿
-export class Order{
-    id?:number; 
+export class Order {
+id?:number; 
 createdUserId?:number; 
 createdDate?:(Date | any); 
 lastUpdatedUserId?:number; 
@@ -10,5 +10,6 @@ isDeleted:boolean;
 customerId?:number; 
 productId?:number; 
 quantity?:number; 
-
+size?: string;
+color?: string;
 }

@@ -33,6 +33,7 @@ export class CustomerComponent implements AfterViewInit, OnInit {
 	
 	customerlookup: LookUp[];
 	
+	
 	customerId:number;
 
 	constructor(private customerService:CustomerService, private lookupService:LookUpService,private alertifyService:AlertifyService,private formBuilder: FormBuilder, private authService:AuthService) { }

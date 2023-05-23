@@ -23,6 +23,8 @@ namespace Business.Handlers.Warehouses.Queries
     {
         public int ProductId { get; set; }
         public int Quantity { get; set; }
+        public string Size { get; set; }
+        public string Color { get; set; }
         public class isExistWarehouseQueryHandler : IRequestHandler<isExistWarehouseQuery, IDataResult<bool>>
         {
             private readonly IWarehouseRepository _warehouseRepository;
@@ -34,10 +36,9 @@ namespace Business.Handlers.Warehouses.Queries
                 _mediator = mediator;
             }
             [LogAspect(typeof(FileLogger))]
-            //[SecuredOperation(Priority = 1)]
             public async Task<IDataResult<bool>> Handle(isExistWarehouseQuery request, CancellationToken cancellationToken)
             {
-              return new SuccessDataResult<bool>(await _warehouseRepository.IsExistWarehouse(request.ProductId,request.Quantity));
+                return new SuccessDataResult<bool>(await _warehouseRepository.IsExistWarehouse(request.ProductId, request.Quantity, request.Size, request.Color));
             }
         }
     }

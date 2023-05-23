@@ -11,9 +11,9 @@ namespace DataAccess.Abstract
 {
     public interface IWarehouseRepository : IEntityRepository<Warehouse>
     {
+        Task<Warehouse> GetWarehouse(int productId, int quantity, string size, string color);
+        Task<List<WarehouseDto>> GetFilterByDate(string startDate, string endDate);
         Task<List<WarehouseDto>> GetWarehouseDto();
-        Task<Warehouse> GetWarehouse(int productId, int stock);
-        Task<bool> IsExistWarehouse(int productId,int quantity);
-        //Task<bool> VerifyWarehuse(Warehouse warehouse);
+        Task<bool> IsExistWarehouse(int productId,int quantity, string size, string color);
     }
 }

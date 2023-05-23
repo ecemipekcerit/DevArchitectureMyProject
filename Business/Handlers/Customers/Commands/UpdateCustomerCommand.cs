@@ -53,7 +53,6 @@ namespace Business.Handlers.Customers.Commands
 
 
                 isThereCustomerRecord.CreatedUserId = request.CreatedUserId;
-                isThereCustomerRecord.CreatedDate = System.DateTime.Now;
                 isThereCustomerRecord.LastUpdatedUserId = request.LastUpdatedUserId;
                 isThereCustomerRecord.LastUpdatedDate = System.DateTime.Now;
                 isThereCustomerRecord.Status = request.Status;

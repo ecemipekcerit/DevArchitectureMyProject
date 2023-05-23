@@ -1,5 +1,4 @@
-﻿
-using Business.Constants;
+﻿using Business.Constants;
 using Business.BusinessAspects;
 using Core.Aspects.Autofac.Caching;
 using Core.Aspects.Autofac.Logging;
@@ -47,23 +46,32 @@ namespace Business.Handlers.Products.Commands
             [SecuredOperation(Priority = 1)]
             public async Task<IResult> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
             {
-                var isThereProductRecord = await _productRepository.GetAsync(u => u.Id == request.Id);
+                var isThereProductRecord = _productRepository.Query().Any(u => u.ProductName == request.ProductName && u.Color == request.Color && u.Size == request.Size && u.isDeleted == false);
+
+                if (isThereProductRecord == true )
+                {
+                    return new ErrorResult(Messages.NameAlreadyExist);
+                }
+                else
+                {
+                    var ProductRecord = await _productRepository.GetAsync(x => x.Id == request.Id);
+                    
+                    ProductRecord.CreatedUserId = request.CreatedUserId;
+                    ProductRecord.LastUpdatedUserId = request.LastUpdatedUserId;
+                    ProductRecord.LastUpdatedDate = System.DateTime.Now;
+                    ProductRecord.Status = request.Status;
+                    ProductRecord.isDeleted = request.isDeleted;
+                    ProductRecord.ProductName = request.ProductName;
+                    ProductRecord.Color = request.Color;
+                    ProductRecord.Size = request.Size;
 
 
-                isThereProductRecord.CreatedUserId = request.CreatedUserId;
-                isThereProductRecord.CreatedDate = System.DateTime.Now;
-                isThereProductRecord.LastUpdatedUserId = request.LastUpdatedUserId;
-                isThereProductRecord.LastUpdatedDate = System.DateTime.Now;
-                isThereProductRecord.Status = request.Status;
-                isThereProductRecord.isDeleted = request.isDeleted;
-                isThereProductRecord.ProductName = request.ProductName;
-                isThereProductRecord.Color = request.Color;
-                isThereProductRecord.Size = request.Size;
+                    _productRepository.Update(ProductRecord);
+                    await _productRepository.SaveChangesAsync();
+                    return new SuccessResult(Messages.Updated);
+                }
 
-
-                _productRepository.Update(isThereProductRecord);
-                await _productRepository.SaveChangesAsync();
-                return new SuccessResult(Messages.Updated);
+                
             }
         }
     }

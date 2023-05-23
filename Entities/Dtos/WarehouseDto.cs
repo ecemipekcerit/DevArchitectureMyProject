@@ -12,7 +12,7 @@ namespace Entities.Dtos
     {
         public int ProductId { get; set; }
         public string ProductName { get; set; }
-        public int Stock { get; set; }
+        public int Quantity { get; set; }
         public bool isReady { get; set; }
     }
 }

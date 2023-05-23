@@ -11,10 +11,12 @@ namespace Entities.Concrete
 {
     public class Warehouse:ProjectBaseEntity, IEntity
     {
-        //[System.ComponentModel.DataAnnotations.Schema.ForeignKey("Product")]
+  
         public int ProductId { get; set; }
-        public int Stock { get; set; }
+        public int Quantity { get; set; }
+        public string Size { get; set; }
+        public string Color { get; set; }
         public bool isReady { get; set; }
-        //public Product Product { get; set; }
+        
     }
 }

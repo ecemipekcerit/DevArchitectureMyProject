@@ -17,7 +17,7 @@ namespace DataAccess.Concrete.EntityFramework
         public CustomerRepository(ProjectDbContext context) : base(context)
         {
         }
-        public async Task<List<SelectionItem>> GetCustomerLookUp()
+        public async Task<List<SelectionItem>> GetCustomersLookUp()
         {
             var lookUp = await (from entity in Context.Customers
                                 select new SelectionItem()
@@ -27,20 +27,15 @@ namespace DataAccess.Concrete.EntityFramework
                                 }).ToListAsync();
             return lookUp;
         }
-        public async Task<List<SelectionItem>> GetCustomerLookUpWithCode()
-        {
-            var lookUp = await (from entity in Context.Customers
-                                select new SelectionItem()
-                                {
-                                    Id = entity.CustomerCode.ToString(),
-                                    Label = entity.CustomerName
-                                }).ToListAsync();
-            return lookUp;
-        }
-
-        public Task<List<SelectionItem>> GetCustomersLookUp()
-        {
-            throw new NotImplementedException();
-        }
+        //public async Task<List<SelectionItem>> GetCustomerLookUpWithCode()
+        //{
+        //    var lookUp = await (from entity in Context.Customers
+        //                        select new SelectionItem()
+        //                        {
+        //                            Id = entity.CustomerCode.ToString(),
+        //                            Label = entity.CustomerCode
+        //                        }).ToListAsync();
+        //    return lookUp;
+        //}
     }
 }

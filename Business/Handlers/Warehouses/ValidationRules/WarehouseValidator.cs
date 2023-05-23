@@ -9,8 +9,7 @@ namespace Business.Handlers.Warehouses.ValidationRules
     {
         public CreateWarehouseValidator()
         {
-            RuleFor(x => x.Stock).NotEmpty();
-            RuleFor(x => x.isReady).NotEmpty();
+            RuleFor(x => x.Quantity).NotEmpty();
 
         }
     }
@@ -18,8 +17,7 @@ namespace Business.Handlers.Warehouses.ValidationRules
     {
         public UpdateWarehouseValidator()
         {
-            RuleFor(x => x.Stock).NotEmpty();
-            RuleFor(x => x.isReady).NotEmpty();
+            RuleFor(x => x.Quantity).NotEmpty();
 
         }
     }
